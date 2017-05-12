@@ -29,11 +29,7 @@ export const LOGGING_IN = 'LOGGING_IN';
 
 export const receiveComments = (comments) => ({
   type: RECEIVE_COMMENTS,
-  comments
-});
-
-export const fetchComments = () => ({
-  type: FETCH_COMMENTS
+  data: comments
 });
 
 export const selectComment = (id) => ({
@@ -129,8 +125,9 @@ export const login = () => {
           dispatch(setSettings({ firebase_user: null, logged_in: false, checking_login: false }));
         }
       })
-      .then((github_user) => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
-      .then((images) => fetchSettings(dispatch, getState().settings.firebase_user.uid))
+      .then(() => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
+      .then(() => fetchAndReceiveComments(dispatch, getState().comments.channel_id))
+      .then(() => fetchSettings(dispatch, getState().settings.firebase_user.uid))
       .catch((error) => dispatch(setAppError(error)));
   };
 };
@@ -152,13 +149,15 @@ export const checkLogin = () => {
             return Promise.reject('You must login to use the app.');
           }
         })
-        .then((github_user) => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
-        .then((images) => fetchSettings(dispatch, getState().settings.firebase_user.uid))
+        .then(() => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
+        .then(() => fetchAndReceiveComments(dispatch, getState().comments.channel_id))
+        .then(() => fetchSettings(dispatch, getState().settings.firebase_user.uid))
         .catch((error) => dispatch(setAppError(error)));
     } else {
       console.log('checkLogin found user', user);
       dispatch(setSettings({ firebase_user: user, logged_in: true, checking_login: false }));
       fetchAndReceiveImages(dispatch, user.uid);
+      fetchAndReceiveComments(dispatch, getState().comments.channel_id);
     }
   };
 };
@@ -175,6 +174,41 @@ const fetchAndReceiveImages = (dispatch, uid) => {
         resolve(images);
       })
       .catch((error) => dispatch(setAppError(error.code)));
+  });
+};
+
+export const writeComment = (data) => {
+  return new Promise((resolve, reject) => {
+    console.log(`write comments ${data}`);
+    firebase.writeDb('comments/0', data)
+      .then(() => resolve())
+      .catch((error) => reject(error));
+  });
+};
+
+export const fetchAndReceiveComments = (dispatch, channel_id) => {
+  return new Promise((resolve, reject) => {
+    console.log(`fetch and receive comments for channel ${channel_id}`);
+    fetchComments(channel_id)
+      .then((comments) => {
+        console.log(comments);
+        dispatch(receiveComments(comments));
+        resolve();
+      })
+      .catch((error) => {
+        dispatch(setAppError(error));
+        dispatch(closeDialog());
+        reject(error);
+      });
+  });
+};
+
+const fetchComments = (channel_id) => {
+  return new Promise((resolve, reject) => {
+    console.log(`fetch comments for channel ${channel_id}`);
+    firebase.fetchDb(`comments/${channel_id}`)
+      .then((comments) => resolve(comments))
+      .catch((error) => reject(error));
   });
 };
 

@@ -1,9 +1,14 @@
-import {RECEIVE_COMMENTS} from '../actions';
+import { RECEIVE_COMMENTS } from '../actions';
 
-const comments = (state = {}, action) => {
+const initialState = {
+  data: {},
+  channel_id: 20170511120000
+};
+
+const comments = (state = initialState, action) => {
   switch (action.type) {
     case RECEIVE_COMMENTS:
-      return {...state, ...action.comments};
+      return { ...state, data: action.data };
     default:
       return state;
   }
