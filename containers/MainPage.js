@@ -6,6 +6,7 @@ import { Page } from 'react-onsenui';
 import NavBar from '../components/NavBar';
 import AddImage from './AddImage';
 import LoginDialog from './LoginDialog';
+import ChannelComments from '../containers/ChannelComments';
 
 const MainPage = ({ logged_in, actions, navigator }) => {
   let content;
@@ -16,6 +17,7 @@ const MainPage = ({ logged_in, actions, navigator }) => {
     content = (
       <div>
         <AddImage navigator={navigator} />
+        <ChannelComments navigator={navigator} />
       </div>
     );
   }

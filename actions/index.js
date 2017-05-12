@@ -2,6 +2,10 @@ import { v4 as generateId } from 'node-uuid';
 
 import { firebase } from '../api';
 
+export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
+export const FETCH_COMMENTS = 'FETCH_COMMENTS';
+export const SELECT_COMMENT = 'SELECT_COMMENT';
+
 export const ADD_IMAGE = 'ADD_IMAGE';
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const SELECT_IMAGE = 'SELECT_IMAGE';
@@ -22,6 +26,20 @@ export const CLOSE_DIALOG = 'CLOSE_DIALOG';
 export const SET_SETTINGS = 'SET_SETTINGS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 export const LOGGING_IN = 'LOGGING_IN';
+
+export const receiveComments = (comments) => ({
+  type: RECEIVE_COMMENTS,
+  comments
+});
+
+export const fetchComments = () => ({
+  type: FETCH_COMMENTS
+});
+
+export const selectComment = (id) => ({
+  type: SELECT_COMMENT,
+  id
+});
 
 export const loggingIn = (logging_in) => ({
   type: LOGGING_IN,
