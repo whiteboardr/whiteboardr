@@ -1,23 +1,34 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Toolbar, ToolbarButton, Icon} from 'react-onsenui';
+import {Splitter, SplitterSide, Page, ListItem, List} from 'react-onsenui';
 
 const SideMenu = ({navigator}) => {
   return (
-    <Toolbar>
-      <div className='left'>
-      <ToolbarButton onClick={this.setState({isOpen: true})}>
-      <Icon icon='ion-navicon, material:md-menu' />
-      </ToolbarButton>
-      </div>
-      <div className='center'>Side menu</div>
-      </Toolbar>
+    <Splitter>
+      <SplitterSide
+        side='left'
+        width={200}
+        collapse={true}
+        isSwipeable={true}
+        isOpen={false}
+        // onClose={this.hide}
+        // onOpen={this.show}
+      >
+        <Page>
+          <List
+            dataSource={['Profile', 'Followers', 'Settings']}
+            renderRow={(title) => (
+              <ListItem key={title} tappable>{title}</ListItem>
+            )}
+          />
+        </Page>
+      </SplitterSide>
+    </Splitter>
   );
 };
-
 const mapStateToProps = (state) => ({
-  isOpen: false
+  // isOpen: state.isOpen
 });
 
 export default connect(mapStateToProps)(SideMenu);
