@@ -22,7 +22,7 @@ const MainPage = ({ logged_in, actions, navigator }) => {
     );
   }
   return (
-    <Page renderToolbar={() => <NavBar title='Whiteboarder' navigator={navigator} />}>
+    <Page renderToolbar={() => <NavBar title='Whiteboardr' navigator={navigator} />}>
       {content}
     </Page>
   );
