@@ -6,6 +6,8 @@ export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const SELECT_COMMENT = 'SELECT_COMMENT';
 
+export const RECEIVE_CHANNELS = 'RECEIVE_CHANNELS';
+
 export const ADD_IMAGE = 'ADD_IMAGE';
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const SELECT_IMAGE = 'SELECT_IMAGE';
@@ -35,6 +37,11 @@ export const receiveComments = (comments) => ({
 export const selectComment = (id) => ({
   type: SELECT_COMMENT,
   id
+});
+
+export const receiveChannels = (channels) => ({
+  type: RECEIVE_CHANNELS,
+  data: channels
 });
 
 export const loggingIn = (logging_in) => ({
@@ -126,6 +133,7 @@ export const login = () => {
         }
       })
       .then(() => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
+      .then(() => fetchAndReceiveChannels(dispatch, getState().channels))
       .then(() => fetchAndReceiveComments(dispatch, getState().comments.channel_id))
       .then(() => fetchSettings(dispatch, getState().settings.firebase_user.uid))
       .catch((error) => dispatch(setAppError(error)));
@@ -150,6 +158,7 @@ export const checkLogin = () => {
           }
         })
         .then(() => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
+        .then(() => fetchAndReceiveChannels(dispatch, getState().channels))
         .then(() => fetchAndReceiveComments(dispatch, getState().comments.channel_id))
         .then(() => fetchSettings(dispatch, getState().settings.firebase_user.uid))
         .catch((error) => dispatch(setAppError(error)));
@@ -158,6 +167,7 @@ export const checkLogin = () => {
       dispatch(setSettings({ firebase_user: user, logged_in: true, checking_login: false }));
       fetchAndReceiveImages(dispatch, user.uid);
       fetchAndReceiveComments(dispatch, getState().comments.channel_id);
+      fetchAndReceiveChannels(dispatch, getState().channels);
     }
   };
 };
@@ -203,11 +213,35 @@ export const fetchAndReceiveComments = (dispatch, channel_id) => {
   });
 };
 
+export const fetchAndReceiveChannels = (dispatch) => {
+  return new Promise((resolve, reject) => {
+    fetchChannels()
+      .then((channels) => {
+        console.log(channels);
+        dispatch(receiveChannels(channels));
+        resolve();
+      })
+      .catch((error) => {
+        dispatch(setAppError(error));
+        dispatch(closeDialog());
+        reject(error);
+      });
+  });
+};
+
 const fetchComments = (channel_id) => {
   return new Promise((resolve, reject) => {
     console.log(`fetch comments for channel ${channel_id}`);
     firebase.fetchDb(`comments/${channel_id}`)
       .then((comments) => resolve(comments))
+      .catch((error) => reject(error));
+  });
+};
+
+const fetchChannels = (channels) => {
+  return new Promise((resolve, reject) => {
+    firebase.fetchDb('channels')
+      .then((channels) => resolve(channels))
       .catch((error) => reject(error));
   });
 };

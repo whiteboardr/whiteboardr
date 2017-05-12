@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
-import { Page } from 'react-onsenui';
 import NavBar from '../components/NavBar';
 import AddImage from './AddImage';
 import LoginDialog from './LoginDialog';
 import ChannelComments from '../containers/ChannelComments';
+import ChannelList from '../containers/ChannelList';
+
+import {Splitter, SplitterSide, SplitterContent, Page} from 'react-onsenui';
 
 const MainPage = ({ logged_in, actions, navigator }) => {
   let content;
@@ -15,10 +17,25 @@ const MainPage = ({ logged_in, actions, navigator }) => {
     content = (<LoginDialog />);
   } else {
     content = (
-      <div>
-        <AddImage navigator={navigator} />
-        <ChannelComments navigator={navigator} />
-      </div>
+      <Splitter>
+        <SplitterSide
+          side='left'
+          width={200}
+          collapse={true}
+          isSwipeable={true}
+          isOpen={false}
+        >
+          <Page>
+            <ChannelList navigator={navigator} />
+          </Page>
+        </SplitterSide>
+        <SplitterContent>
+          <div>
+            <AddImage navigator={navigator} />
+            <ChannelComments navigator={navigator} />
+          </div>
+        </SplitterContent>
+      </Splitter>
     );
   }
   return (
