@@ -38064,13 +38064,17 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.closeDialog = exports.openDialog = exports.takeAndStorePicture = exports.checkLogin = exports.login = exports.setSettings = exports.updateSettings = exports.setFetchError = exports.setAppError = exports.receiveRepo = exports.receiveRepos = exports.receiveImages = exports.receiveImage = exports.requestImage = exports.selectImage = exports.removeImage = exports.addImage = exports.loggingIn = exports.LOGGING_IN = exports.UPDATE_SETTINGS = exports.SET_SETTINGS = exports.CLOSE_DIALOG = exports.OPEN_DIALOG = exports.SET_APP_ERROR = exports.SET_FETCH_ERROR = exports.RECEIVE_REPO = exports.RECEIVE_REPOS = exports.RECEIVE_IMAGES = exports.RECEIVE_IMAGE = exports.REQUEST_IMAGE = exports.SELECT_IMAGE = exports.REMOVE_IMAGE = exports.ADD_IMAGE = undefined;
+	exports.closeDialog = exports.openDialog = exports.takeAndStorePicture = exports.checkLogin = exports.login = exports.setSettings = exports.updateSettings = exports.setFetchError = exports.setAppError = exports.receiveRepo = exports.receiveRepos = exports.receiveImages = exports.receiveImage = exports.requestImage = exports.selectImage = exports.removeImage = exports.addImage = exports.loggingIn = exports.selectComment = exports.fetchComments = exports.receiveComments = exports.LOGGING_IN = exports.UPDATE_SETTINGS = exports.SET_SETTINGS = exports.CLOSE_DIALOG = exports.OPEN_DIALOG = exports.SET_APP_ERROR = exports.SET_FETCH_ERROR = exports.RECEIVE_REPO = exports.RECEIVE_REPOS = exports.RECEIVE_IMAGES = exports.RECEIVE_IMAGE = exports.REQUEST_IMAGE = exports.SELECT_IMAGE = exports.REMOVE_IMAGE = exports.ADD_IMAGE = exports.SELECT_COMMENT = exports.FETCH_COMMENTS = exports.RECEIVE_COMMENTS = undefined;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _nodeUuid = __webpack_require__(409);
 	
 	var _api = __webpack_require__(428);
+	
+	var RECEIVE_COMMENTS = exports.RECEIVE_COMMENTS = 'RECEIVE_COMMENTS';
+	var FETCH_COMMENTS = exports.FETCH_COMMENTS = 'FETCH_COMMENTS';
+	var SELECT_COMMENT = exports.SELECT_COMMENT = 'SELECT_COMMENT';
 	
 	var ADD_IMAGE = exports.ADD_IMAGE = 'ADD_IMAGE';
 	var REMOVE_IMAGE = exports.REMOVE_IMAGE = 'REMOVE_IMAGE';
@@ -38092,6 +38096,26 @@
 	var SET_SETTINGS = exports.SET_SETTINGS = 'SET_SETTINGS';
 	var UPDATE_SETTINGS = exports.UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 	var LOGGING_IN = exports.LOGGING_IN = 'LOGGING_IN';
+	
+	var receiveComments = exports.receiveComments = function receiveComments(comments) {
+	  return {
+	    type: RECEIVE_COMMENTS,
+	    comments: comments
+	  };
+	};
+	
+	var fetchComments = exports.fetchComments = function fetchComments() {
+	  return {
+	    type: FETCH_COMMENTS
+	  };
+	};
+	
+	var selectComment = exports.selectComment = function selectComment(id) {
+	  return {
+	    type: SELECT_COMMENT,
+	    id: id
+	  };
+	};
 	
 	var loggingIn = exports.loggingIn = function loggingIn(logging_in) {
 	  return {
@@ -72201,6 +72225,10 @@
 	
 	var _LoginDialog2 = _interopRequireDefault(_LoginDialog);
 	
+	var _ChannelComments = __webpack_require__(441);
+	
+	var _ChannelComments2 = _interopRequireDefault(_ChannelComments);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -72218,7 +72246,8 @@
 	    content = _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2.default.createElement(_AddImage2.default, { navigator: navigator })
+	      _react2.default.createElement(_AddImage2.default, { navigator: navigator }),
+	      _react2.default.createElement(_ChannelComments2.default, { navigator: navigator })
 	    );
 	  }
 	  return _react2.default.createElement(
