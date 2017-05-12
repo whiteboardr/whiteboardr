@@ -72303,6 +72303,10 @@
 	
 	var _ChannelComments2 = _interopRequireDefault(_ChannelComments);
 	
+	var _SideMenu = __webpack_require__(443);
+	
+	var _SideMenu2 = _interopRequireDefault(_SideMenu);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -72321,7 +72325,8 @@
 	      'div',
 	      null,
 	      _react2.default.createElement(_AddImage2.default, { navigator: navigator }),
-	      _react2.default.createElement(_ChannelComments2.default, { navigator: navigator })
+	      _react2.default.createElement(_ChannelComments2.default, { navigator: navigator }),
+	      _react2.default.createElement(_SideMenu2.default, { navigator: navigator })
 	    );
 	  }
 	  return _react2.default.createElement(
@@ -72748,6 +72753,166 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Comment);
+
+/***/ },
+/* 444 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(179);
+	
+	var _reactOnsenui = __webpack_require__(433);
+	
+	var _Comment = __webpack_require__(442);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var ChannelComments = function ChannelComments(_ref) {
+	  var comments = _ref.comments,
+	      navigator = _ref.navigator;
+	
+	  if (!Object.keys(comments).length) {
+	    return null;
+	  }
+	  return _react2.default.createElement(_reactOnsenui.List, {
+	    dataSource: Object.keys(comments).map(function (key) {
+	      return comments[key];
+	    }),
+	    renderRow: function renderRow(comment) {
+	      return _react2.default.createElement(_Comment.Comment, _extends({
+	        key: comment.id,
+	        navigator: navigator
+	      }, comment));
+	    }
+	  });
+	};
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    comments: state.comments
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(ChannelComments);
+
+/***/ },
+/* 442 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(179);
+	
+	var _redux = __webpack_require__(186);
+	
+	var _actions = __webpack_require__(408);
+	
+	var Actions = _interopRequireWildcard(_actions);
+	
+	var _reactOnsenui = __webpack_require__(433);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Comment = function Comment(_ref) {
+	  var text = _ref.text,
+	      navigator = _ref.navigator;
+	
+	  return _react2.default.createElement(
+	    _reactOnsenui.ListItem,
+	    { tappable: true },
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      ' ',
+	      text,
+	      ' '
+	    )
+	  );
+	};
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {};
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    actions: (0, _redux.bindActionCreators)(Actions, dispatch)
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Comment);
+
+/***/ },
+/* 443 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(179);
+	
+	var _reactOnsenui = __webpack_require__(433);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var SideMenu = function SideMenu(_ref) {
+	  var navigator = _ref.navigator;
+	
+	  return _react2.default.createElement(
+	    _reactOnsenui.Toolbar,
+	    null,
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'left' },
+	      _react2.default.createElement(
+	        _reactOnsenui.ToolbarButton,
+	        { onClick: undefined.setState({ isOpen: true }) },
+	        _react2.default.createElement(_reactOnsenui.Icon, { icon: 'ion-navicon, material:md-menu' })
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'center' },
+	      'Side menu'
+	    )
+	  );
+	};
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    isOpen: false
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SideMenu);
 
 /***/ },
 /* 444 */
