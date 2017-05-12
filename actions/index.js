@@ -104,11 +104,11 @@ export const login = () => {
       .then((result) => {
         console.log('loginGoogleWithRedirect', result);
         if (result.credential) {
-          dispatch(setSettings({ firebase_user: result.user.toJSON() }));
+          dispatch(setSettings({ firebase_user: result.user.toJSON(), logged_in: true, checking_login: false }));
           dispatch(closeDialog());
           return Promise.resolve();
         } else {
-          dispatch(setSettings({ firebase_user: null, logged_in: false }));
+          dispatch(setSettings({ firebase_user: null, logged_in: false, checking_login: false }));
         }
       })
       .then((github_user) => fetchAndReceiveImages(dispatch, getState().settings.firebase_user.uid))
@@ -126,7 +126,7 @@ export const checkLogin = () => {
         .then((result) => {
           console.log('googleRedirectResult', result);
           if (result.credential) {
-            dispatch(setSettings({ firebase_user: result.user.toJSON() }));
+            dispatch(setSettings({ firebase_user: result.user.toJSON(), logged_in: true, checking_login: false }));
             dispatch(closeDialog());
             return Promise.resolve();
           } else {
@@ -149,7 +149,11 @@ const fetchAndReceiveImages = (dispatch, uid) => {
   return new Promise((resolve, reject) => {
     fetchPictures(uid)
       .then((images) => {
-        dispatch(receiveImages(images));
+        if (images) {
+          dispatch(receiveImages(images));
+        } else {
+          images = [];
+        }
         resolve(images);
       })
       .catch((error) => dispatch(setAppError(error.code)));
